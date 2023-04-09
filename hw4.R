@@ -7,8 +7,7 @@ data = read_csv("airport_pairs.csv")
 #Question 1
 # Filtering for data of flights in or out of RDU
 RDUdata = filter(data, origin == "RDU" | dest == "RDU")
-# Selecting the columns we need
-RDUdataselected = subset(RDUdata, select = c(origin, dest, passengers))
+
 # Sorting by passenger count
 RDUdataarranged = arrange(RDUdata, passengers)
 # Filtering for more than 10000 passengers
@@ -54,7 +53,7 @@ census_dest = census_dest %>%
   rename("dest_cbsa"="GEOID")
 
 # Merging all the data
-join1 = merge(filtered, census_origin, by="origin_cbsa")
+join1 = merge(data, census_origin, by="origin_cbsa")
 join2 = merge(join1, census_dest, by="dest_cbsa")
 
 # Scatterplot of origin population vs total passengers
@@ -75,3 +74,4 @@ ggplot(join2, aes(x=atorabove_povertylevel_originE, y=passengers)) +
 
 ggplot(join2, aes(x=atorabove_povertylevel_destE, y=passengers)) +
   geom_point(size=1)
+
