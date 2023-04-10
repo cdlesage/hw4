@@ -58,7 +58,8 @@ join2 = merge(join1, census_dest, by="dest_cbsa")
 
 # Scatterplot of origin population vs total passengers
 ggplot(join2, aes(x=origin_popE, y=passengers)) +
-  geom_point(size=1)
+  geom_point(size=1) 
+
 
 # Scatterplot of destination population vs total passengers
 ggplot(join2, aes(x=dest_popE, y=passengers)) +
@@ -66,7 +67,8 @@ ggplot(join2, aes(x=dest_popE, y=passengers)) +
 
 # Scatterplot of flight distance vs total passengers
 ggplot(join2, aes(x=distancemiles, y=passengers)) +
-  geom_point(size=1)
+  geom_point(size=1) +
+  geom_smooth(method = "loess", formula = y ~ x)
 
 # Scatterplots of poverty status variable 
 ggplot(join2, aes(x=atorabove_povertylevel_originE, y=passengers)) +
@@ -74,4 +76,32 @@ ggplot(join2, aes(x=atorabove_povertylevel_originE, y=passengers)) +
 
 ggplot(join2, aes(x=atorabove_povertylevel_destE, y=passengers)) +
   geom_point(size=1)
+
+# Question 3
+# Regression model of the variables 
+multiple_variable_regression = lm(passengers~origin_popE+dest_popE+distancemiles+atorabove_povertylevel_originE+atorabove_povertylevel_destE, join2)
+summary(multiple_variable_regression)
+
+
+# Question 4
+
+# Creating a new data frame
+join2simple = subset(join2, select = c(origin, dest, passengers, distancemiles, dest_popE, origin_popE, atorabove_povertylevel_originE, atorabove_povertylevel_destE))
+route1 = filter(join2simple, origin == "RDU" | dest == "RDU" | origin == "PDX" | dest == "PDX")
+route2 = filter(join2simple, origin == "RDU" | dest == "RDU" | origin == "ELP" | dest == "ELP")
+route3 = filter(join2simple, origin == "RDU" | dest == "RDU" | origin == "TLH" | dest == "TLH")
+route4 = filter(join2simple, origin == "RDU" | dest == "RDU" | origin == "SAN" | dest == "SAN")
+# Using predict for route 1
+route1$prediction = predict(multiple_variable_regression, route1)
+route2$prediction = predict(multiple_variable_regression, route2)
+route3$prediction = predict(multiple_variable_regression, route3)
+route4$prediction = predict(multiple_variable_regression, route4)
+
+
+
+
+
+
+
+
 
