@@ -79,6 +79,7 @@ ggplot(join2, aes(x=atorabove_povertylevel_destE, y=passengers)) +
 
 # Question 3
 # Regression model of the variables 
+
 multiple_variable_regression = lm(passengers~origin_popE+dest_popE+distancemiles+atorabove_povertylevel_originE+atorabove_povertylevel_destE, join2)
 summary(multiple_variable_regression)
 
@@ -97,10 +98,10 @@ route2$prediction = predict(multiple_variable_regression, route2)
 route3$prediction = predict(multiple_variable_regression, route3)
 route4$prediction = predict(multiple_variable_regression, route4)
 
-
-
-
-
+mean(route1$prediction)
+mean(route2$prediction)
+mean(route3$prediction)
+mean(route4$prediction)
 
 
 
